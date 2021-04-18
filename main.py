@@ -72,7 +72,7 @@ def login():
 
         elif not check_password_hash(user.password, password):
             print("Wrong Password")
-            flash('Password incorrect, please try again.')
+            flash('Password incorrect, please try again..')
 
         else:
             login_user(user)
