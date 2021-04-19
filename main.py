@@ -5,10 +5,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import time
 import os
 
-
 app = Flask(__name__)
 
-# app.config['SECRET_KEY'] = 'ssfSDFSDFSFSFSFsFsFsFsDFSDFsDFSFSfD'
+# app.config['SECRET_KEY'] = 'ý{Hå<ùã.5ÑO<!Õ¢ R"¡¨'
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
