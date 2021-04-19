@@ -1,16 +1,18 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import time
 import os
+from functools import wraps
+
 
 app = Flask(__name__)
 
-# app.config['SECRET_KEY'] = 'ý{Hå<ùã.5ÑO<!Õ¢ R"¡¨'
+# app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
+#SECRET KEY IS IN .env
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -39,6 +41,14 @@ db.create_all()
 # db.session.delete(user)
 # db.session.commit()
 
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.name != "admin":
+            return abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @app.route('/')
 def home():
@@ -62,6 +72,7 @@ def delete():
 
 
 @app.route('/login', methods=["GET", "POST"])
+
 def login():
     if request.method == "POST":
         email = request.form.get('email')
@@ -120,6 +131,11 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
+@app.route('/downloads')
+@admin_only
+def downloads():
+    return render_template("downloads.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
