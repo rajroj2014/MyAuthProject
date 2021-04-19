@@ -32,7 +32,7 @@ class UserDB(UserMixin, db.Model):
 
 
 #Line below only required once, when creating DB.
-# db.create_all()
+db.create_all()
 
 ###### DELETE FROM DB ########
 # user = UserDB.query.filter_by(name="rajai").first()
