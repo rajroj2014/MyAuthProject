@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 # app.config['SECRET_KEY'] = 'ý{Hå<ùã.5ÑO<!Õ¢ R"¡¨'
-app.config['SECRET_KEY'] = os.environ.get("any-secret-key-you-choose")
+app.config['SECRET_KEY'] = "any-secret-key-you-choose"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://grcxticnlyniqb:4257269b7b3f959f01d7f0150089b438e9b5a73eb34f10c0a9843e6b772de25a@ec2-34-206-8-52.compute-1.amazonaws.com:5432/d9ttq0bp3sqob7'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
