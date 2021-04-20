@@ -5,6 +5,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import time
 import os
 from functools import wraps
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, URL
+from flask_wtf import FlaskForm
 
 
 app = Flask(__name__)
@@ -102,35 +105,35 @@ def login():
 
 
 
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        print(request.form.get('name'))
-        print(request.form.get('email'))
-        print(request.form.get('password'))
-        # name = request.form.get('name')
-        email = request.form.get('email')
-        # password = request.form.get('password')
-        user = UserDB.query.filter_by(email=email).first()
-        if user:
-            flash("That email exist, Redirecting to log in page")
-            return redirect(url_for('login'))
+        if request.method == "POST":
+            print(request.form.get('name'))
+            print(request.form.get('email'))
+            print(request.form.get('password'))
+            # name = request.form.get('name')
+            email = request.form.get('email')
+            # password = request.form.get('password')
+            user = UserDB.query.filter_by(email=email).first()
+            if user:
+                flash("Email already registered, please log in")
+                return redirect(url_for('login'))
 
-        else:
-            new_user = UserDB(
-                email=request.form.get('email'),
-                name=request.form.get('name'),
-                password=generate_password_hash(request.form.get('password'), method='pbkdf2:sha256', salt_length=8)
-            )
-
-
-            db.session.add(new_user)
-            db.session.commit()
-            return redirect(url_for('home'))
+            else:
+                new_user = UserDB(
+                    email=request.form.get('email'),
+                    name=request.form.get('name'),
+                    password=generate_password_hash(request.form.get('password'), method='pbkdf2:sha256', salt_length=8)
+                )
 
 
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user)
+                return render_template("success.html", logged_name=current_user.name)
 
-    return render_template("register.html")
+        return render_template("register.html")
 
 @app.route('/logout')
 def logout():
