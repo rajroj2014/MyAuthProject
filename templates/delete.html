@@ -11,18 +11,17 @@
 
 
 
-{% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-         <p>{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+
 
     <form  method="post">
     	<input type="email" name="email" placeholder="Email" required="required" />
         <button type="submit" class="btn btn-primary btn-block btn-large">Delete</button>
     </form>
 </div>
+
+    {%for mails in all_emails_list:%}
+        <p><li>{{ mails.email }}</li></p>
+    {% endfor %}
+
 </body>
 </html>

@@ -9,5 +9,11 @@ YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY {{logged_name}}
 
 <a href="{{ url_for('logout') }}">logout</a>
 <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
+{% if current_user.name== "admin" %}
+    <a class="nav-link" href="{{ url_for('delete') }}">Delete User</a>
+{% endif %}
+
+
+
 </body>
 </html>

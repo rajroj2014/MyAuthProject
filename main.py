@@ -55,7 +55,13 @@ def home():
     return render_template("index.html")
 
 @app.route('/delete', methods=["GET", "POST"])
+@admin_only
 def delete():
+    all_emails_list = []
+    all_emails = UserDB.query.all()
+    for mail in all_emails:
+        all_emails_list.append(mail)
+
     if request.method == "POST":
         email = request.form.get('email')
         user = UserDB.query.filter_by(email=email).first()
@@ -68,7 +74,7 @@ def delete():
             return render_template("delete.html")
 
 
-    return render_template("delete.html")
+    return render_template("delete.html", all_emails_list=all_emails_list)
 
 
 @app.route('/login', methods=["GET", "POST"])
